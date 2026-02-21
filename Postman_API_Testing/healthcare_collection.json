@@ -1,0 +1,222 @@
+{
+  "info": {
+    "_postman_id": "01955612-31aa-4166-a8d9-d30d87e2fd0d",
+    "name": "Healthcare API Testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51214739",
+    "_collection_link": "https://go.postman.co/collection/51214739-01955612-31aa-4166-a8d9-d30d87e2fd0d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "CREATE PATIENT",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let res = pm.response.json();\r",
+              "pm.environment.set(\"patientId\", res.id);\r",
+              "\r",
+              "pm.test(\"Patient created\", () => {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"resourceType\": \"Patient\",\r\n  \"name\": [\r\n    {\r\n      \"family\": \"{{family}}\",\r\n      \"given\": [\"{{given}}\"]\r\n    }\r\n  ],\r\n  \"gender\": \"{{gender}}\",\r\n  \"birthDate\": \"{{birthDate}}\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/Patient",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "Patient"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Read Patient",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Patient fetched successfully\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/Patient/{{patientId}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "Patient",
+            "{{patientId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CREATE APPOINTMENT",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "\r",
+              "const response = pm.response.json();\r",
+              "\r",
+              "\r",
+              "pm.environment.set(\"appointmentId\", response.id);\r",
+              "\r",
+              "\r",
+              "pm.test(\"Appointment Created\", function () {\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"resourceType\": \"Appointment\",\r\n  \"status\": \"booked\",\r\n  \"participant\": [\r\n    {\r\n      \"actor\": {\r\n        \"reference\": \"Patient/{{patientId}}\"\r\n      },\r\n      \"status\": \"accepted\"\r\n    }\r\n  ],\r\n  \"description\": \"General Checkup\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/Appointment",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "Appointment"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "UPDATE APPOINTMENT",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Appointment updated\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"resourceType\": \"Appointment\",\r\n  \"id\": \"{{appointmentId}}\",\r\n  \"status\": \"booked\",\r\n  \"description\": \"Updated Consultation\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/Appointment/{{appointmentId}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "Appointment",
+            "{{appointmentId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE APPOINTMENT",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Deleted successfully\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/Appointment/{{appointmentId}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "Appointment",
+            "{{appointmentId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
