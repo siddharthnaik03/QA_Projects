@@ -7,6 +7,6 @@
 
 🔹 [Selenium Automation](./Selenium_Automation)
 
-🔹 [Performance Testing (JMeter)](./JMeter)
+🔹 [Performance Testing (JMeter)](./Performance_Testing_JMeter/README.md)
 
 🔹 [Tosca Automation](./Tosca_Automation)
